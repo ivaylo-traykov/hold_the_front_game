@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://btdce0wpl3mom"]
+
+[ext_resource type="Texture2D" uid="uid://b0o7eyv5tcb0c" path="res://Assets/UI/button_square.png" id="1_1rvf6"]
+[ext_resource type="Script" path="res://Scenes/UI/Buttons/BuildButton.gd" id="2_s4vde"]
+
+[node name="BuildButton" type="TextureButton"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture_normal = ExtResource("1_1rvf6")
+texture_pressed = ExtResource("1_1rvf6")
+script = ExtResource("2_s4vde")

@@ -1,0 +1,91 @@
+[gd_scene load_steps=8 format=3 uid="uid://w2kogqhb2s2p"]
+
+[ext_resource type="Script" path="res://Scenes/game_scene.gd" id="1_1bcl0"]
+[ext_resource type="PackedScene" uid="uid://n507v1svr00l" path="res://Scenes/Maps/map_test.tscn" id="1_h5d62"]
+[ext_resource type="Resource" uid="uid://impyf2s526i2" path="res://Resources/Turrets/machine_gun.tres" id="3_mdrvh"]
+[ext_resource type="PackedScene" uid="uid://d24cypwf4d234" path="res://Scenes/Turrets/Turret.tscn" id="3_uj4iu"]
+[ext_resource type="Resource" uid="uid://dhav4oqreiexo" path="res://Resources/Turrets/artillery.tres" id="4_5tdkv"]
+[ext_resource type="Script" path="res://Scenes/UI/Buttons/BuildArtillery.gd" id="4_80h8a"]
+[ext_resource type="Script" path="res://Scenes/UI/Buttons/BuildMachineGun.gd" id="4_d5nte"]
+
+[node name="GameScene" type="Node"]
+script = ExtResource("1_1bcl0")
+
+[node name="Map" type="Node" parent="."]
+
+[node name="Map_test" parent="Map" instance=ExtResource("1_h5d62")]
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="HUD" type="Control" parent="UI"]
+custom_minimum_size = Vector2(192, 640)
+layout_mode = 3
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -192.0
+offset_top = -320.0
+offset_bottom = 320.0
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_horizontal = 8
+
+[node name="Background" type="ColorRect" parent="UI/HUD"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.196078, 0.156863, 0.156863, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/HUD"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBox" type="HBoxContainer" parent="UI/HUD/MarginContainer"]
+layout_mode = 2
+
+[node name="BuildBar" type="VBoxContainer" parent="UI/HUD/MarginContainer/HBox"]
+custom_minimum_size = Vector2(0, 250)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+
+[node name="BuildBarRow" type="HBoxContainer" parent="UI/HUD/MarginContainer/HBox/BuildBar"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="BuildMachineGun" type="TextureButton" parent="UI/HUD/MarginContainer/HBox/BuildBar/BuildBarRow"]
+layout_mode = 2
+size_flags_horizontal = 4
+script = ExtResource("4_d5nte")
+stats = ExtResource("3_mdrvh")
+
+[node name="BuildArtillery" type="TextureButton" parent="UI/HUD/MarginContainer/HBox/BuildBar/BuildBarRow"]
+layout_mode = 2
+script = ExtResource("4_80h8a")
+stats = ExtResource("4_5tdkv")
+
+[node name="BuildBarRow2" type="HBoxContainer" parent="UI/HUD/MarginContainer/HBox/BuildBar"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="Turrets" type="Node" parent="."]
+
+[node name="Turret" parent="Turrets" instance=ExtResource("3_uj4iu")]
+position = Vector2(263, 288)
