@@ -1,0 +1,30 @@
+[gd_scene load_steps=7 format=3 uid="uid://cuhh2hs800axh"]
+
+[ext_resource type="Script" path="res://Scenes/Turrets/machine_gun_1.gd" id="1_bl8e7"]
+[ext_resource type="Resource" uid="uid://impyf2s526i2" path="res://Resources/Turrets/machine_gun.tres" id="2_cgdky"]
+[ext_resource type="Texture2D" uid="uid://vhl72kkil64q" path="res://Assets/Turrets/MachineGun/machine_hun_base.png" id="3_mvvlj"]
+[ext_resource type="Texture2D" uid="uid://bsisrsb88x3up" path="res://Assets/Turrets/MachineGun/machine_gun1.png" id="4_8gnsr"]
+[ext_resource type="Texture2D" uid="uid://cf1mile2rhvak" path="res://Assets/Turrets/range_overlay.png" id="5_fallu"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_d1rcg"]
+
+[node name="MachineGun1" type="Node2D"]
+script = ExtResource("1_bl8e7")
+stats = ExtResource("2_cgdky")
+
+[node name="Base" type="Sprite2D" parent="."]
+texture = ExtResource("3_mvvlj")
+
+[node name="Turret" type="Sprite2D" parent="."]
+texture = ExtResource("4_8gnsr")
+
+[node name="Muzzle" type="Marker2D" parent="."]
+position = Vector2(30, -1)
+
+[node name="Range" type="Area2D" parent="."]
+
+[node name="CollisionShape" type="CollisionShape2D" parent="Range"]
+shape = SubResource("CircleShape2D_d1rcg")
+
+[node name="RangeOverlay" type="Sprite2D" parent="Range"]
+texture = ExtResource("5_fallu")

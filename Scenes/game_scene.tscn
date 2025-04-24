@@ -2,11 +2,11 @@
 
 [ext_resource type="Script" path="res://Scenes/game_scene.gd" id="1_1bcl0"]
 [ext_resource type="PackedScene" uid="uid://n507v1svr00l" path="res://Scenes/Maps/map_test.tscn" id="1_h5d62"]
+[ext_resource type="Script" path="res://Scenes/UI.gd" id="3_m078l"]
 [ext_resource type="Resource" uid="uid://impyf2s526i2" path="res://Resources/Turrets/machine_gun.tres" id="3_mdrvh"]
-[ext_resource type="PackedScene" uid="uid://d24cypwf4d234" path="res://Scenes/Turrets/Turret.tscn" id="3_uj4iu"]
 [ext_resource type="Resource" uid="uid://dhav4oqreiexo" path="res://Resources/Turrets/artillery.tres" id="4_5tdkv"]
-[ext_resource type="Script" path="res://Scenes/UI/Buttons/BuildArtillery.gd" id="4_80h8a"]
-[ext_resource type="Script" path="res://Scenes/UI/Buttons/BuildMachineGun.gd" id="4_d5nte"]
+[ext_resource type="Script" path="res://Scenes/UI/Buttons/build_artillery.gd" id="4_80h8a"]
+[ext_resource type="Script" path="res://Scenes/UI/Buttons/build_mahine_gun.gd" id="4_d5nte"]
 
 [node name="GameScene" type="Node"]
 script = ExtResource("1_1bcl0")
@@ -16,6 +16,13 @@ script = ExtResource("1_1bcl0")
 [node name="Map_test" parent="Map" instance=ExtResource("1_h5d62")]
 
 [node name="UI" type="CanvasLayer" parent="."]
+script = ExtResource("3_m078l")
+
+[node name="Preview" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="HUD" type="Control" parent="UI"]
 custom_minimum_size = Vector2(192, 640)
@@ -68,13 +75,13 @@ size_flags_vertical = 3
 theme_override_constants/separation = 20
 alignment = 1
 
-[node name="BuildMachineGun" type="TextureButton" parent="UI/HUD/MarginContainer/HBox/BuildBar/BuildBarRow"]
+[node name="BuildMachineGun" type="TextureButton" parent="UI/HUD/MarginContainer/HBox/BuildBar/BuildBarRow" groups=["build_buttons"]]
 layout_mode = 2
 size_flags_horizontal = 4
 script = ExtResource("4_d5nte")
 stats = ExtResource("3_mdrvh")
 
-[node name="BuildArtillery" type="TextureButton" parent="UI/HUD/MarginContainer/HBox/BuildBar/BuildBarRow"]
+[node name="BuildArtillery" type="TextureButton" parent="UI/HUD/MarginContainer/HBox/BuildBar/BuildBarRow" groups=["build_buttons"]]
 layout_mode = 2
 script = ExtResource("4_80h8a")
 stats = ExtResource("4_5tdkv")
@@ -86,6 +93,3 @@ theme_override_constants/separation = 20
 alignment = 1
 
 [node name="Turrets" type="Node" parent="."]
-
-[node name="Turret" parent="Turrets" instance=ExtResource("3_uj4iu")]
-position = Vector2(263, 288)

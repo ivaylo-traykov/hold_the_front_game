@@ -3,29 +3,33 @@ class_name Turret extends Node2D
 
 @export var stats: TurretStats
 
-var base_sprite: Sprite2D
-var turret_sprite: Sprite2D
+@onready var base_sprite: Sprite2D = $Base
+@onready var turret_sprite: Sprite2D = $Turret
+@onready var range: CollisionShape2D = $Range/CollisionShape
+@onready var range_overlay: Sprite2D = $Range/RangeOverlay
+
+var built: bool = false
 
 func _ready() -> void:
-	var base = Sprite2D.new()
-	base.set_texture(stats.base)
-	base.set_name("Base")
-	base_sprite = base
-	add_child(base)
-	var turret = Sprite2D.new()
-	turret.set_name("Turret")
-	turret.set_texture(stats.sprite)
-	turret.set_offset(stats.sprite_offset)
-	turret_sprite = turret
-	add_child(turret)
+	set_range(stats.range)
+	range_overlay.set_visible(true)
 
 
-func _process(delta):
+func _process(delta) -> void:
+	if not built:
+		return
+		
 	turn()
 
 
-func turn():
+func turn() -> void:
 	var enemy_position = get_global_mouse_position()
-	turret_sprite.look_at(enemy_position)
-	
+	turret_sprite.look_at(enemy_position)	
 
+
+#region Helper Functions
+func set_range(range) -> void:
+	var scaling = range / 600.0
+	self.range.get_shape().set_radius(range / 2)
+	self.range_overlay.scale = Vector2(scaling, scaling)
+#endregion

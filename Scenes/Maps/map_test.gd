@@ -3,7 +3,7 @@ extends Node
 @onready var paths : Array = get_node("Paths").get_children()
 
 func _ready():
-	print(get_longest_path())
+	pass
 
 
 func get_longest_path() -> Path2D:

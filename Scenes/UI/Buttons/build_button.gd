@@ -11,4 +11,5 @@ func _ready() -> void:
 	button_icon.set_texture(stats.icon)
 	button_icon.set_scale(stats.icon_scale)
 	button_icon.set_offset(stats.icon_offset)
+	button_icon.set_name("Icon")
 	add_child(button_icon)

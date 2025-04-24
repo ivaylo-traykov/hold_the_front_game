@@ -1,6 +1,5 @@
-[gd_resource type="Resource" script_class="TurretStats" load_steps=4 format=3 uid="uid://impyf2s526i2"]
+[gd_resource type="Resource" script_class="TurretStats" load_steps=3 format=3 uid="uid://impyf2s526i2"]
 
-[ext_resource type="Texture2D" uid="uid://vhl72kkil64q" path="res://Assets/Turrets/MachineGun/machine_hun_base.png" id="1_h3pjd"]
 [ext_resource type="Texture2D" uid="uid://bsisrsb88x3up" path="res://Assets/Turrets/MachineGun/machine_gun1.png" id="2_h4nis"]
 [ext_resource type="Script" path="res://Resources/Turrets/turret_stats.gd" id="3_6i6qo"]
 
@@ -9,8 +8,9 @@ script = ExtResource("3_6i6qo")
 level = 0
 damage = 0
 cost = 0
-base = ExtResource("1_h3pjd")
-sprite = ExtResource("2_h4nis")
+attack_speed = 0
+range = 250
 icon = ExtResource("2_h4nis")
 icon_scale = Vector2(1, 1)
 icon_offset = Vector2(28, 32)
+turret = "machine_gun_1"
