@@ -15,7 +15,7 @@ func _ready() -> void:
 	range_overlay.set_visible(true)
 
 
-func _process(delta) -> void:
+func _process(_delta) -> void:
 	if not built:
 		return
 		
@@ -28,6 +28,11 @@ func turn() -> void:
 
 
 #region Helper Functions
+func build() -> void:
+	built = true
+	range_overlay.set_visible(false)
+	
+
 func set_range(range) -> void:
 	var scaling = range / 600.0
 	self.range.get_shape().set_radius(range / 2)

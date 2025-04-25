@@ -5,7 +5,7 @@ class_name UI extends CanvasLayer
 
 
 func get_turret_preview(turret_name: String) -> void:
-	var mouse_position = get_node("HUD").get_global_mouse_position()
+	#var mouse_position = get_node("HUD").get_global_mouse_position()
 	var turret_preview = load("res://Scenes/Turrets/" + turret_name + ".tscn").instantiate()
 	turret_preview.set_name("TurretPreview")
 	preview.add_child(turret_preview)

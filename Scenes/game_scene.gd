@@ -53,8 +53,8 @@ func build_turret() -> void:
 	var new_turret: Turret
 	new_turret = load("res://Scenes/Turrets/" + turret_name + ".tscn").instantiate()
 	new_turret.position = build_tile_position
-	new_turret.built = true
 	turrets.add_child(new_turret)
+	new_turret.build()
 	
 
 func update_turret_preview() -> void:
