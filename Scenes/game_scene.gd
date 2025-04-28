@@ -10,6 +10,8 @@ var build_mode: bool = false
 var build_tile_position: Vector2
 var valid_build_location: bool
 var turret_name: String
+var wave_number: int = 1
+var wave_data: Wave
 
 
 func _ready() -> void:
@@ -80,6 +82,34 @@ func is_valid_turret_location(tile_position) -> bool:
 #endregion
 
 
+#region SpawnEnemies
+func spawnEnemies() -> void:
+	var enemies: Array = retriev_wave_data()
+	var path: Path2D
+	for enemy in enemies:
+		path = map.get_paths().pick_random()
+		spawn_enemy(enemy[0], path)
+		await(get_tree().create_timer(enemy[1]).timeout)
+
+
+func spawn_enemy(enemy: PathFollow2D, path: Path2D) -> void:
+	path.add_child(enemy)
+
+
+func retriev_wave_data() -> Array:
+	wave_data = load("res://Resources/Levels/wave_" + str(wave_number) + ".tres") 
+	var result: Array 
+	for sequence in wave_data.get_wave():
+		for i in range(sequence["amount"]):
+			var name: String = sequence["name"]
+			var interval: float = sequence["interval"]
+			var tank: PathFollow2D = load("res://Scenes/Enemies/" + name + ".tscn").instantiate()
+			var temp_arr: Array = [tank, interval]
+			result.append(temp_arr)
+	return result
+#endregion
+
+
 #region Helper Functions
 func get_tile_position() -> Vector2:
 	var mouse_position = UI.get_node("HUD").get_global_mouse_position()
@@ -88,3 +118,7 @@ func get_tile_position() -> Vector2:
 	var tile_position = tile_map.map_to_local(current_tile)
 	return tile_position
 #endregion
+
+
+func _on_texture_button_pressed():
+	spawnEnemies()

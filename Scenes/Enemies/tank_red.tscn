@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=3 uid="uid://b083endde8rco"]
+
+[ext_resource type="Script" path="res://Scenes/Enemies/tank_blue.gd" id="1_aj6g7"]
+[ext_resource type="Resource" uid="uid://bux5r1psrq3g5" path="res://Resources/Enemies/tank_red.tres" id="2_06nvf"]
+[ext_resource type="Texture2D" uid="uid://ckaoy3jrsy2y1" path="res://Assets/Enemies/tank_red.png" id="3_loprr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oe2sk"]
+size = Vector2(48, 32)
+
+[node name="TankBlue" type="PathFollow2D"]
+loop = false
+script = ExtResource("1_aj6g7")
+stats = ExtResource("2_06nvf")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="Sprite" type="Sprite2D" parent="Area2D"]
+texture = ExtResource("3_loprr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_oe2sk")

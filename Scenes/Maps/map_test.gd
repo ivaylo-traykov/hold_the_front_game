@@ -1,9 +1,13 @@
-extends Node
+class_name Map extends Node
 
 @onready var paths : Array = get_node("Paths").get_children()
 
 func _ready():
 	pass
+
+
+func get_paths() -> Array:
+	return paths
 
 
 func get_longest_path() -> Path2D:
