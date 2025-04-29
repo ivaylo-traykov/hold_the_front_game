@@ -11,7 +11,11 @@ var build_tile_position: Vector2
 var valid_build_location: bool
 var turret_name: String
 var wave_number: int = 1
+var is_wave_running: bool = false
 var wave_data: Wave
+var enemies_in_wave: int
+var enemies_killed: int
+var base_health: int = 50
 
 
 func _ready() -> void:
@@ -86,6 +90,8 @@ func is_valid_turret_location(tile_position) -> bool:
 func spawnEnemies() -> void:
 	var enemies: Array = retriev_wave_data()
 	var path: Path2D
+	enemies_in_wave = enemies.size()
+	enemies_killed = 0
 	for enemy in enemies:
 		path = map.get_paths().pick_random()
 		spawn_enemy(enemy[0], path)
@@ -104,6 +110,8 @@ func retriev_wave_data() -> Array:
 			var name: String = sequence["name"]
 			var interval: float = sequence["interval"]
 			var tank: PathFollow2D = load("res://Scenes/Enemies/" + name + ".tscn").instantiate()
+			tank.enemy_killed.connect(on_enemy_killed)
+			tank.hit_base.connect(on_base_hit)
 			var temp_arr: Array = [tank, interval]
 			result.append(temp_arr)
 	return result
@@ -117,8 +125,22 @@ func get_tile_position() -> Vector2:
 	var current_tile = tile_map.local_to_map(mouse_position)
 	var tile_position = tile_map.map_to_local(current_tile)
 	return tile_position
+
+
+func on_enemy_killed() -> void:
+	enemies_killed += 1
+	if enemies_killed == enemies_in_wave:
+		is_wave_running = false
+		wave_number += 1
+
+
+func on_base_hit() -> void:
+	base_health -= 1
 #endregion
 
 
 func _on_texture_button_pressed():
+	if is_wave_running:
+		return
+	is_wave_running = true
 	spawnEnemies()
