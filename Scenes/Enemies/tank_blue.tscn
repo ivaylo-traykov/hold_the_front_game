@@ -12,10 +12,10 @@ loop = false
 script = ExtResource("1_63sjj")
 stats = ExtResource("2_n6p6t")
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="Body" type="CharacterBody2D" parent="."]
 
-[node name="Sprite" type="Sprite2D" parent="Area2D"]
+[node name="Sprite" type="Sprite2D" parent="Body"]
 texture = ExtResource("2_hk3ex")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Body"]
 shape = SubResource("RectangleShape2D_oe2sk")

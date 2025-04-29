@@ -7,15 +7,15 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oe2sk"]
 size = Vector2(48, 32)
 
-[node name="TankBlue" type="PathFollow2D"]
+[node name="TankRed" type="PathFollow2D"]
 loop = false
 script = ExtResource("1_aj6g7")
 stats = ExtResource("2_06nvf")
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="Body" type="CharacterBody2D" parent="."]
 
-[node name="Sprite" type="Sprite2D" parent="Area2D"]
+[node name="Sprite" type="Sprite2D" parent="Body"]
 texture = ExtResource("3_loprr")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Body"]
 shape = SubResource("RectangleShape2D_oe2sk")

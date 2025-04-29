@@ -22,9 +22,13 @@ texture = ExtResource("4_8gnsr")
 position = Vector2(30, -1)
 
 [node name="Range" type="Area2D" parent="."]
+monitorable = false
 
 [node name="CollisionShape" type="CollisionShape2D" parent="Range"]
 shape = SubResource("CircleShape2D_d1rcg")
 
 [node name="RangeOverlay" type="Sprite2D" parent="Range"]
 texture = ExtResource("5_fallu")
+
+[connection signal="body_entered" from="Range" to="." method="_on_range_body_entered"]
+[connection signal="body_exited" from="Range" to="." method="_on_range_body_exited"]
