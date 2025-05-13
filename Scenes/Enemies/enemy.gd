@@ -3,6 +3,7 @@ class_name Enemy extends PathFollow2D
 
 signal enemy_killed
 signal hit_base
+
 @export var stats: EnemyStats
 
 

@@ -103,13 +103,14 @@ func spawn_enemy(enemy: PathFollow2D, path: Path2D) -> void:
 
 
 func retriev_wave_data() -> Array:
-	wave_data = load("res://Resources/Levels/wave_" + str(wave_number) + ".tres") 
+	#wave_data = load("res://Resources/Levels/wave_" + str(wave_number) + ".tres") 
+	wave_data = load("res://Resources/Levels/wave_" + str(1) + ".tres") 
 	var result: Array 
 	for sequence in wave_data.get_wave():
 		for i in range(sequence["amount"]):
-			var name: String = sequence["name"]
+			var type: String = sequence["type"]
 			var interval: float = sequence["interval"]
-			var tank: PathFollow2D = load("res://Scenes/Enemies/" + name + ".tscn").instantiate()
+			var tank: PathFollow2D = load("res://Scenes/Enemies/" + type + ".tscn").instantiate()
 			tank.enemy_killed.connect(on_enemy_killed)
 			tank.hit_base.connect(on_base_hit)
 			var temp_arr: Array = [tank, interval]
