@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://nciwom1qid7e"]
+[gd_scene load_steps=6 format=3 uid="uid://nciwom1qid7e"]
 
 [ext_resource type="Script" path="res://Scenes/Enemies/tank_blue.gd" id="1_63sjj"]
 [ext_resource type="Texture2D" uid="uid://bskp2er8eonjv" path="res://Assets/Enemies/tank_blue.png" id="2_hk3ex"]
 [ext_resource type="Resource" uid="uid://c76n4jnrniw0g" path="res://Resources/Enemies/tank_blue.tres" id="2_n6p6t"]
+[ext_resource type="PackedScene" uid="uid://dm6htwq2vixel" path="res://Scenes/Enemies/health_bar.tscn" id="4_l64tk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oe2sk"]
 size = Vector2(48, 32)
@@ -19,3 +20,9 @@ texture = ExtResource("2_hk3ex")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Body"]
 shape = SubResource("RectangleShape2D_oe2sk")
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="."]
+remote_path = NodePath("../HealthBar")
+update_rotation = false
+
+[node name="HealthBar" parent="." instance=ExtResource("4_l64tk")]

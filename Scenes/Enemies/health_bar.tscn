@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://dm6htwq2vixel"]
+
+[ext_resource type="Script" path="res://Scenes/Enemies/health_bar.gd" id="1_tcljr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_flbqt"]
+bg_color = Color(0, 0.686275, 0, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+anti_aliasing = false
+
+[node name="HealthBar" type="Node2D"]
+top_level = true
+script = ExtResource("1_tcljr")
+
+[node name="Bar" type="ProgressBar" parent="."]
+custom_minimum_size = Vector2(60, 6)
+offset_left = -30.0
+offset_top = -30.0
+offset_right = 30.0
+offset_bottom = -24.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_flbqt")
+value = 60.0
+show_percentage = false
