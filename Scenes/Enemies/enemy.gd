@@ -9,6 +9,7 @@ signal hit_base
 @export var stats: EnemyStats
 
 var health: int
+var dead: bool = false
 
 
 func _ready() -> void:
@@ -39,5 +40,8 @@ func get_hit(damage) -> void:
 
 
 func die() -> void:
-	enemy_killed.emit()
-	queue_free()
+	if not dead:
+		dead = true
+		#get_node("Body/CollisionShape2D").disabled = true
+		enemy_killed.emit()
+		queue_free()

@@ -22,7 +22,7 @@ func _ready() -> void:
 	set_range(stats.range)
 	range_overlay.set_visible(true)
 	fire_cooldown.wait_time = stats.attack_speed
-	fire_cooldown.timeout.connect(_on_fire_cooldown_timeout)
+	fire_cooldown.timeout.connect(on_fire_cooldown_timeout)
 	add_child(fire_cooldown)
 	muzzle.get_node("Flash").hide()
 
@@ -98,7 +98,7 @@ func fire(target: PathFollow2D) -> void:
 		fire_cooldown.start()
 
 
-func _on_fire_cooldown_timeout() -> void:
+func on_fire_cooldown_timeout() -> void:
 	can_fire = true
 #endregion
 

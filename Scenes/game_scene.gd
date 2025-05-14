@@ -4,6 +4,11 @@ class_name Game extends Node
 @onready var UI: CanvasLayer = $UI
 @onready var map: Node = $Map.get_child(0)
 @onready var turrets: Node = $Turrets
+@onready var wave_button = $UI/HUD/MarginContainer/VBox/GameControls/WaveButton
+@onready var wave_button_label = wave_button.get_node("Label")
+@onready var pause_button = $UI/HUD/MarginContainer/VBox/GameControls/SpeedControls/Pause
+@onready var play_button = $UI/HUD/MarginContainer/VBox/GameControls/SpeedControls/Play
+@onready var forward_button = $UI/HUD/MarginContainer/VBox/GameControls/SpeedControls/FastForward
 
 var map_node: Node2D
 var build_mode: bool = false
@@ -12,6 +17,9 @@ var valid_build_location: bool
 var turret_name: String
 var wave_number: int = 1
 var is_wave_running: bool = false
+var enemies: Array
+var spawn_cooldown: Timer = Timer.new()
+var can_spawn: bool = true
 var wave_data: Wave
 var enemies_in_wave: int
 var enemies_killed: int
@@ -20,7 +28,11 @@ var base_health: int = 50
 
 func _ready() -> void:
 	map_node = get_node("Map").get_child(0)
-
+	wave_button_label.update_text(str(wave_number))
+	
+	spawn_cooldown.timeout.connect(on_spaw_cooldown_timeout)
+	add_child(spawn_cooldown)
+	
 	for x in get_tree().get_nodes_in_group("build_buttons"):
 		x.connect("pressed", Callable(self, "initiate_build_mode")
 			.bind(x.stats.turret))
@@ -30,13 +42,26 @@ func _unhandled_input(event) -> void:
 	if event.is_action_released("ui_cancel") and build_mode:
 		cancel_build_mode()
 	if event.is_action_released("ui_accept") and build_mode:
-		if build_turret():
+		if build_turret() and 0:
 			cancel_build_mode()
 
 
 func _process(delta) -> void:
 	if build_mode:
 		update_turret_preview()
+	
+	if can_spawn and enemies.size() > 0:
+		can_spawn = false
+		var path: Path2D
+		path = map.get_paths().pick_random()
+		var enemy = enemies.pop_front()
+		print("spawn enemy")
+		path.add_child(enemy[0])
+		spawn_cooldown.wait_time = enemy[1]
+		spawn_cooldown.start()
+	
+	var DEBUG = get_node("DEBUG")
+	DEBUG.text = 'in wave: %d \nkilled: %d' % [enemies_in_wave, enemies_killed]
 
 
 #region Build Functions
@@ -88,24 +113,13 @@ func is_valid_turret_location(tile_position) -> bool:
 
 
 #region SpawnEnemies
-func spawn_enemies() -> void:
-	var enemies: Array = retriev_wave_data()
-	var path: Path2D
-	enemies_in_wave = enemies.size()
-	enemies_killed = 0
-	for enemy in enemies:
-		path = map.get_paths().pick_random()
-		spawn_enemy(enemy[0], path)
-		await(get_tree().create_timer(enemy[1]).timeout)
+func on_spaw_cooldown_timeout() -> void:
+	can_spawn = true
 
 
-func spawn_enemy(enemy: PathFollow2D, path: Path2D) -> void:
-	path.add_child(enemy)
-
-
-func retriev_wave_data() -> Array:
-	wave_data = load("res://Resources/Levels/wave_" + str(wave_number) + ".tres") 
-	#wave_data = load("res://Resources/Levels/wave_" + str(1) + ".tres") 
+func retriev_wave_data() -> void:
+	#wave_data = load("res://Resources/Levels/wave_" + str(wave_number) + ".tres") 
+	wave_data = load("res://Resources/Levels/wave_" + str(1) + ".tres") 
 	var result: Array 
 	for sequence in wave_data.get_wave():
 		for i in range(sequence["amount"]):
@@ -116,7 +130,9 @@ func retriev_wave_data() -> Array:
 			tank.hit_base.connect(on_base_hit)
 			var temp_arr: Array = [tank, interval]
 			result.append(temp_arr)
-	return result
+	enemies = result
+	enemies_in_wave = enemies.size()
+	enemies_killed = 0
 #endregion
 
 
@@ -134,6 +150,8 @@ func on_enemy_killed() -> void:
 	if enemies_killed == enemies_in_wave:
 		is_wave_running = false
 		wave_number += 1
+		wave_button_label.update_text(str(wave_number))
+		wave_button.disabled = false
 
 
 func on_base_hit() -> void:
@@ -141,8 +159,36 @@ func on_base_hit() -> void:
 #endregion
 
 
-func _on_texture_button_pressed():
+#region Game Controls
+func _on_wave_button_pressed():
 	if is_wave_running:
 		return
 	is_wave_running = true
-	spawn_enemies()
+	wave_button.disabled = true
+	retriev_wave_data()
+
+
+func _on_pause_pressed():
+	if build_mode:
+		cancel_build_mode()
+	get_tree().paused = true
+	play_button.modulate = "a7a7a7"
+	forward_button.modulate = "a7a7a7"
+	pause_button.modulate = "fff"
+
+
+func _on_play_pressed():
+	get_tree().paused = false
+	Engine.set_time_scale(1.0)
+	forward_button.modulate = "a7a7a7"
+	pause_button.modulate = "a7a7a7"
+	play_button.modulate = "fff"
+
+
+func _on_fast_forward_pressed():
+	get_tree().paused = false
+	Engine.set_time_scale(2.0)
+	pause_button.modulate = "a7a7a7"
+	play_button.modulate = "a7a7a7"
+	forward_button.modulate = "fff"
+#endregion
