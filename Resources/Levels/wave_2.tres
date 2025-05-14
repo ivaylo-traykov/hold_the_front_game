@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="Wave" load_steps=7 format=3 uid="uid://c7t41loxygh4v"]
+
+[ext_resource type="Script" path="res://Resources/Levels/wave.gd" id="1_xhliy"]
+[ext_resource type="Script" path="res://Resources/Levels/enemy_sequence.gd" id="2_47l8t"]
+
+[sub_resource type="Resource" id="Resource_va7po"]
+script = ExtResource("2_47l8t")
+type = "tank_red"
+amount = 2
+interval = 1.0
+
+[sub_resource type="Resource" id="Resource_j3p2b"]
+script = ExtResource("2_47l8t")
+type = "tank_blue"
+amount = 5
+interval = 0.5
+
+[sub_resource type="Resource" id="Resource_psk6r"]
+script = ExtResource("2_47l8t")
+type = "tank_blue"
+amount = 1
+interval = 2.0
+
+[sub_resource type="Resource" id="Resource_5piu1"]
+script = ExtResource("2_47l8t")
+type = "tank_red"
+amount = 4
+interval = 0.5
+
+[resource]
+script = ExtResource("1_xhliy")
+wave = Array[ExtResource("2_47l8t")]([SubResource("Resource_va7po"), SubResource("Resource_j3p2b"), SubResource("Resource_psk6r"), SubResource("Resource_5piu1")])

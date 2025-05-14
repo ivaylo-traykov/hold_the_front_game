@@ -30,8 +30,8 @@ func _unhandled_input(event) -> void:
 	if event.is_action_released("ui_cancel") and build_mode:
 		cancel_build_mode()
 	if event.is_action_released("ui_accept") and build_mode:
-		build_turret()
-		cancel_build_mode()
+		if build_turret():
+			cancel_build_mode()
 
 
 func _process(delta) -> void:
@@ -53,14 +53,15 @@ func cancel_build_mode() -> void:
 	UI.get_node("Preview").get_child(0).free()
 
 
-func build_turret() -> void:
+func build_turret() -> bool:
 	if not build_mode or not valid_build_location:
-		return
+		return false
 	var new_turret: Turret
 	new_turret = load("res://Scenes/Turrets/" + turret_name + ".tscn").instantiate()
 	new_turret.position = build_tile_position
 	turrets.add_child(new_turret)
 	new_turret.build()
+	return true
 	
 
 func update_turret_preview() -> void:
@@ -87,7 +88,7 @@ func is_valid_turret_location(tile_position) -> bool:
 
 
 #region SpawnEnemies
-func spawnEnemies() -> void:
+func spawn_enemies() -> void:
 	var enemies: Array = retriev_wave_data()
 	var path: Path2D
 	enemies_in_wave = enemies.size()
@@ -103,8 +104,8 @@ func spawn_enemy(enemy: PathFollow2D, path: Path2D) -> void:
 
 
 func retriev_wave_data() -> Array:
-	#wave_data = load("res://Resources/Levels/wave_" + str(wave_number) + ".tres") 
-	wave_data = load("res://Resources/Levels/wave_" + str(1) + ".tres") 
+	wave_data = load("res://Resources/Levels/wave_" + str(wave_number) + ".tres") 
+	#wave_data = load("res://Resources/Levels/wave_" + str(1) + ".tres") 
 	var result: Array 
 	for sequence in wave_data.get_wave():
 		for i in range(sequence["amount"]):
@@ -144,4 +145,4 @@ func _on_texture_button_pressed():
 	if is_wave_running:
 		return
 	is_wave_running = true
-	spawnEnemies()
+	spawn_enemies()

@@ -8,7 +8,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oe2sk"]
 size = Vector2(48, 32)
 
-[node name="TankBlue" type="PathFollow2D"]
+[node name="TankBlue" type="PathFollow2D" groups=["enemies"]]
 loop = false
 script = ExtResource("1_63sjj")
 stats = ExtResource("2_n6p6t")

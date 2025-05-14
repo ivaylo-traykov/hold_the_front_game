@@ -21,7 +21,7 @@ texture = ExtResource("3_loprr")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Body"]
 shape = SubResource("RectangleShape2D_oe2sk")
 
-[node name="RemoteTransform2D" type="RemoteTransform2D" parent="."]
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="." groups=["enemies"]]
 remote_path = NodePath("../HealthBar")
 update_rotation = false
 

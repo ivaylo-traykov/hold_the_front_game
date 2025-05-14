@@ -2,21 +2,29 @@ class_name Turret extends Node2D
 
 
 @export var stats: TurretStats
+@export var bullet_scene: PackedScene
 
 @onready var base_sprite: Sprite2D = $Base
 @onready var turret_sprite: Sprite2D = $Turret
 @onready var range: CollisionShape2D = $Range/CollisionShape
 @onready var range_overlay: Sprite2D = $Range/RangeOverlay
+@onready var muzzle: Marker2D = $Turret/Muzzle
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 var built: bool = false
 var enemies: Array[Enemy]
 var target: PathFollow2D = null
 var target_locked: bool = false
-
+var can_fire: bool = true
+var fire_cooldown: Timer = Timer.new()
 
 func _ready() -> void:
 	set_range(stats.range)
 	range_overlay.set_visible(true)
+	fire_cooldown.wait_time = stats.attack_speed
+	fire_cooldown.timeout.connect(_on_fire_cooldown_timeout)
+	add_child(fire_cooldown)
+	muzzle.get_node("Flash").hide()
 
 
 func _physics_process(_delta) -> void:
@@ -28,6 +36,7 @@ func _physics_process(_delta) -> void:
 			target = select_enemy()
 		if target_locked:
 			turn(target)
+			fire(target)
 		else:
 			switch_target(target)
 
@@ -75,6 +84,22 @@ func set_range(range) -> void:
 	var scaling = range / 600.0
 	self.range.get_shape().set_radius(range / 2)
 	self.range_overlay.scale = Vector2(scaling, scaling)
+
+
+func fire(target: PathFollow2D) -> void:
+	if can_fire:
+		can_fire = false
+		var bullet = bullet_scene.instantiate()
+		bullet.direction = Vector2(cos(turret_sprite.rotation),sin(turret_sprite.rotation))
+		bullet.angle = turret_sprite.rotation
+		bullet.damage = stats.damage
+		add_child(bullet)
+		animation_player.play("muzzle_flash")
+		fire_cooldown.start()
+
+
+func _on_fire_cooldown_timeout() -> void:
+	can_fire = true
 #endregion
 
 

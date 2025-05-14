@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://txcxy7ggsjiy"]
+
+[ext_resource type="Script" path="res://Scenes/Turrets/machine_gun_bullet_1.gd" id="1_pm2e6"]
+[ext_resource type="Texture2D" uid="uid://ie8r0io2r3v4" path="res://Assets/Turrets/MachineGun/bullet_machine_gun_1.png" id="2_dw3g3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ppnsd"]
+size = Vector2(10, 4)
+
+[node name="MachineGunBullet_1" type="Area2D"]
+scale = Vector2(0.8, 0.8)
+script = ExtResource("1_pm2e6")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_dw3g3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_ppnsd")
+
+[node name="VisibleNotifier" type="VisibleOnScreenNotifier2D" parent="."]
+scale = Vector2(0.375, 0.125)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="screen_exited" from="VisibleNotifier" to="." method="_on_visible_notifier_screen_exited"]

@@ -8,11 +8,17 @@ signal hit_base
 
 @export var stats: EnemyStats
 
+var health: int
+
 
 func _ready() -> void:
 	self.set_loop(false)
 	health_bar.set_max_health(stats.health)
 	health_bar.update_health(stats.health)
+	health_bar.hide()
+	health = stats.health
+	if not is_in_group("enemies"):
+		add_to_group("enemies")
 
 
 func _physics_process(delta) ->void:
@@ -20,6 +26,16 @@ func _physics_process(delta) ->void:
 	if get_progress_ratio() == 1.0:
 		hit_base.emit()
 		die()
+
+
+func get_hit(damage) -> void:
+	health -= damage
+	if health <= 0:
+		die()
+		return
+	if not health_bar.visible:
+		health_bar.show()
+	health_bar.update_health(health)
 
 
 func die() -> void:
