@@ -7,7 +7,7 @@
 script = ExtResource("3_6i6qo")
 level = 0
 damage = 10
-cost = 0
+cost = 50
 attack_speed = 0.5
 range = 250
 icon = ExtResource("2_h4nis")

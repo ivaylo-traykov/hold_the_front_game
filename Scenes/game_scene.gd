@@ -14,7 +14,9 @@ var map_node: Node2D
 var build_mode: bool = false
 var build_tile_position: Vector2
 var valid_build_location: bool
+var have_enough_money: bool
 var turret_name: String
+var turret_cost: int
 var wave_number: int = 1
 var is_wave_running: bool = false
 var enemies: Array
@@ -24,7 +26,7 @@ var wave_data: Wave
 var enemies_in_wave: int
 var enemies_killed: int
 var base_health: int = 50
-
+var money: int = 150
 
 func _ready() -> void:
 	map_node = get_node("Map").get_child(0)
@@ -33,9 +35,11 @@ func _ready() -> void:
 	spawn_cooldown.timeout.connect(on_spaw_cooldown_timeout)
 	add_child(spawn_cooldown)
 	
+	update_money_amount()
+	
 	for x in get_tree().get_nodes_in_group("build_buttons"):
 		x.connect("pressed", Callable(self, "initiate_build_mode")
-			.bind(x.stats.turret))
+			.bind(x.stats.turret, x.stats.cost))
 
 
 func _unhandled_input(event) -> void:
@@ -66,11 +70,12 @@ func _physics_process(delta):
 
 
 #region Build Functions
-func initiate_build_mode(turret: String) -> void:
+func initiate_build_mode(turret: String, cost: int) -> void:
 	if build_mode:
 		cancel_build_mode()
 	build_mode = true
 	turret_name = turret
+	turret_cost = cost
 	UI.get_turret_preview(turret)
 
 
@@ -80,22 +85,27 @@ func cancel_build_mode() -> void:
 
 
 func build_turret() -> bool:
-	if not build_mode or not valid_build_location:
+	if not build_mode or not valid_build_location or not have_enough_money:
 		return false
+	money -= turret_cost
+	update_money_amount()
 	var new_turret: Turret
 	new_turret = load("res://Scenes/Turrets/" + turret_name + ".tscn").instantiate()
 	new_turret.position = build_tile_position
 	turrets.add_child(new_turret)
 	new_turret.build()
 	return true
-	
+
 
 func update_turret_preview() -> void:
 	build_tile_position = get_tile_position()
 	valid_build_location = is_valid_turret_location(build_tile_position)
+	have_enough_money = have_money_to_build(turret_cost)
 	var color: Color = "3cff3c"
 	if not valid_build_location:
 		color = "ff3c3c"
+	elif not have_enough_money:
+		color = "ffff3d"
 	UI.update_turret_preview(build_tile_position, color)
 
 
@@ -110,6 +120,10 @@ func is_valid_turret_location(tile_position) -> bool:
 			has_turret = true
 			break
 	return not (has_road or has_prop or has_turret) 
+
+
+func have_money_to_build(cost: int) -> bool:
+	return cost <= money
 #endregion
 
 
@@ -129,6 +143,7 @@ func retriev_wave_data() -> void:
 			var tank: PathFollow2D = load("res://Scenes/Enemies/" + type + ".tscn").instantiate()
 			tank.enemy_killed.connect(on_enemy_killed)
 			tank.hit_base.connect(on_base_hit)
+			tank.drop_reward.connect(on_reward_dropped)
 			var temp_arr: Array = [tank, interval]
 			result.append(temp_arr)
 	enemies = result
@@ -157,6 +172,15 @@ func on_enemy_killed() -> void:
 
 func on_base_hit() -> void:
 	base_health -= 1
+
+
+func on_reward_dropped(reward: int) -> void:
+	money += reward
+	update_money_amount()
+
+
+func update_money_amount() -> void:
+	UI.update_money_amount(money)
 #endregion
 
 

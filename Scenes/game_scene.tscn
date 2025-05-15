@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://w2kogqhb2s2p"]
+[gd_scene load_steps=18 format=3 uid="uid://w2kogqhb2s2p"]
 
 [ext_resource type="Script" path="res://Scenes/game_scene.gd" id="1_1bcl0"]
 [ext_resource type="PackedScene" uid="uid://n507v1svr00l" path="res://Scenes/Maps/map_test.tscn" id="1_h5d62"]
@@ -14,6 +14,14 @@
 [ext_resource type="Texture2D" uid="uid://c3nw4u1yaccl2" path="res://Assets/UI/pause.png" id="8_gmqf5"]
 [ext_resource type="Texture2D" uid="uid://c7811wk4kmq0y" path="res://Assets/UI/forward.png" id="9_j4eb8"]
 [ext_resource type="Texture2D" uid="uid://xn1fxa60mr4r" path="res://Assets/UI/fastForward.png" id="10_0bj7b"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_fqtvm"]
+font_size = 32
+outline_size = 1
+outline_color = Color(0.239216, 0.239216, 0.239216, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_bg7yl"]
+font_size = 32
 
 [sub_resource type="LabelSettings" id="LabelSettings_s1nsb"]
 font_size = 32
@@ -78,6 +86,20 @@ layout_mode = 2
 custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
 size_flags_vertical = 10
+
+[node name="Money" type="HBoxContainer" parent="UI/HUD/MarginContainer/VBox/Stats"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="Currency" type="Label" parent="UI/HUD/MarginContainer/VBox/Stats/Money"]
+layout_mode = 2
+text = "$"
+label_settings = SubResource("LabelSettings_fqtvm")
+
+[node name="Amount" type="Label" parent="UI/HUD/MarginContainer/VBox/Stats/Money"]
+layout_mode = 2
+text = "1200"
+label_settings = SubResource("LabelSettings_bg7yl")
 
 [node name="GameControls" type="VBoxContainer" parent="UI/HUD/MarginContainer/VBox"]
 custom_minimum_size = Vector2(0, 150)

@@ -6,4 +6,4 @@
 script = ExtResource("1_7guha")
 health = 50
 speed = 150
-reward = 0
+reward = 10
