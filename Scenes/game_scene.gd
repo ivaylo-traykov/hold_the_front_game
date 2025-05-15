@@ -50,18 +50,19 @@ func _process(delta) -> void:
 	if build_mode:
 		update_turret_preview()
 	
+	var DEBUG = get_node("DEBUG")
+	DEBUG.text = 'in wave: %d \nkilled: %d' % [enemies_in_wave, enemies_killed]
+
+
+func _physics_process(delta):
 	if can_spawn and enemies.size() > 0:
 		can_spawn = false
 		var path: Path2D
 		path = map.get_paths().pick_random()
 		var enemy = enemies.pop_front()
-		print("spawn enemy")
 		path.add_child(enemy[0])
 		spawn_cooldown.wait_time = enemy[1]
 		spawn_cooldown.start()
-	
-	var DEBUG = get_node("DEBUG")
-	DEBUG.text = 'in wave: %d \nkilled: %d' % [enemies_in_wave, enemies_killed]
 
 
 #region Build Functions

@@ -17,13 +17,20 @@ var target: PathFollow2D = null
 var target_locked: bool = false
 var can_fire: bool = true
 var fire_cooldown: Timer = Timer.new()
+var can_roam: bool = false
+var roaming_dir: float
+var roamimg_cooldown: Timer = Timer.new()
+
 
 func _ready() -> void:
 	set_range(stats.range)
 	range_overlay.set_visible(true)
 	fire_cooldown.wait_time = stats.attack_speed
 	fire_cooldown.timeout.connect(on_fire_cooldown_timeout)
+	roamimg_cooldown.wait_time = 3.0
+	roamimg_cooldown.timeout.connect(on_roamimg_cooldown_timeout)
 	add_child(fire_cooldown)
+	add_child(roamimg_cooldown)
 	muzzle.get_node("Flash").hide()
 
 
@@ -31,6 +38,7 @@ func _physics_process(_delta) -> void:
 	if not built:
 		return
 	if enemies.size() > 0:
+		can_roam = false
 		if not target or target not in enemies:
 			target_locked = false
 			target = select_enemy()
@@ -39,6 +47,8 @@ func _physics_process(_delta) -> void:
 			fire(target)
 		else:
 			switch_target(target)
+	else:
+		idle()
 
 
 #region Helper Functions
@@ -47,6 +57,14 @@ func select_enemy() -> PathFollow2D:
 	if enemies.size() <= 0:
 		return null
 	return enemies[0]
+
+
+func idle() -> void:
+	if not can_roam:
+		can_roam = true
+		roamimg_cooldown.start()
+		roaming_dir = [0.5,-0.5].pick_random()
+	turret_sprite.rotation_degrees += roaming_dir
 
 
 func turn(target: PathFollow2D) -> void:
@@ -96,6 +114,10 @@ func fire(target: PathFollow2D) -> void:
 		add_child(bullet)
 		animation_player.play("muzzle_flash")
 		fire_cooldown.start()
+
+
+func on_roamimg_cooldown_timeout() -> void:
+	can_roam = false
 
 
 func on_fire_cooldown_timeout() -> void:
