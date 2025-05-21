@@ -2,6 +2,9 @@ class_name BuildButton extends TextureButton
 
 
 @export var stats: TurretStats
+
+@onready var price_tag = get_parent().get_node("PriceTag")
+
 var button_texture: Texture2D = load("res://Assets/UI/button_square.png")
 
 
@@ -13,3 +16,5 @@ func _ready() -> void:
 	button_icon.set_offset(stats.icon_offset)
 	button_icon.set_name("Icon")
 	add_child(button_icon)
+	
+	price_tag.text = "$%s" % str(stats.cost)
