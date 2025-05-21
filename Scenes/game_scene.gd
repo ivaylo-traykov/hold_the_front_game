@@ -36,6 +36,8 @@ func _ready() -> void:
 	add_child(spawn_cooldown)
 	
 	update_money_amount()
+	UI.set_base_health_max(base_health)
+	update_base_health()
 	
 	for x in get_tree().get_nodes_in_group("build_buttons"):
 		x.connect("pressed", Callable(self, "initiate_build_mode")
@@ -172,6 +174,7 @@ func on_enemy_killed() -> void:
 
 func on_base_hit() -> void:
 	base_health -= 1
+	update_base_health()
 
 
 func on_reward_dropped(reward: int) -> void:
@@ -181,6 +184,10 @@ func on_reward_dropped(reward: int) -> void:
 
 func update_money_amount() -> void:
 	UI.update_money_amount(money)
+
+
+func update_base_health() -> void:
+	UI.update_base_health(base_health)
 #endregion
 
 
@@ -201,7 +208,7 @@ func _on_pause_pressed():
 	forward_button.modulate = "a7a7a7"
 	pause_button.modulate = "fff"
 
-
+ 
 func _on_play_pressed():
 	get_tree().paused = false
 	Engine.set_time_scale(1.0)

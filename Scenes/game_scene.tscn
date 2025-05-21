@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://w2kogqhb2s2p"]
+[gd_scene load_steps=21 format=3 uid="uid://w2kogqhb2s2p"]
 
 [ext_resource type="Script" path="res://Scenes/game_scene.gd" id="1_1bcl0"]
 [ext_resource type="PackedScene" uid="uid://n507v1svr00l" path="res://Scenes/Maps/map_test.tscn" id="1_h5d62"]
@@ -8,12 +8,19 @@
 [ext_resource type="Script" path="res://Scenes/UI/Buttons/build_artillery.gd" id="4_80h8a"]
 [ext_resource type="Script" path="res://Scenes/UI/Buttons/build_mahine_gun.gd" id="4_d5nte"]
 [ext_resource type="Texture2D" uid="uid://btiy45gkkvhl3" path="res://Assets/UI/button_wave.png" id="4_gv361"]
+[ext_resource type="Texture2D" uid="uid://cwpylmldg0nnu" path="res://Assets/UI/home.png" id="4_hdih2"]
 [ext_resource type="Texture2D" uid="uid://c0mgfvu6g1b8h" path="res://Assets/UI/button_wave_pressed.png" id="5_tg41r"]
 [ext_resource type="Script" path="res://Scenes/UI/Label.gd" id="6_d4lsx"]
 [ext_resource type="Texture2D" uid="uid://ci7vkqvrssbr5" path="res://Assets/UI/button_wave_disabled.png" id="6_pp25c"]
 [ext_resource type="Texture2D" uid="uid://c3nw4u1yaccl2" path="res://Assets/UI/pause.png" id="8_gmqf5"]
 [ext_resource type="Texture2D" uid="uid://c7811wk4kmq0y" path="res://Assets/UI/forward.png" id="9_j4eb8"]
 [ext_resource type="Texture2D" uid="uid://xn1fxa60mr4r" path="res://Assets/UI/fastForward.png" id="10_0bj7b"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6wklf"]
+bg_color = Color(0.811765, 0.415686, 0.321569, 0.388235)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l2wq7"]
+bg_color = Color(0, 0.87451, 0.0823529, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_fqtvm"]
 font_size = 32
@@ -86,6 +93,26 @@ layout_mode = 2
 custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
 size_flags_vertical = 10
+
+[node name="BaseHealth" type="HBoxContainer" parent="UI/HUD/MarginContainer/VBox/Stats"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="HomeIcon" type="TextureRect" parent="UI/HUD/MarginContainer/VBox/Stats/BaseHealth"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+texture = ExtResource("4_hdih2")
+
+[node name="HealthBar" type="ProgressBar" parent="UI/HUD/MarginContainer/VBox/Stats/BaseHealth"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/background = SubResource("StyleBoxFlat_6wklf")
+theme_override_styles/fill = SubResource("StyleBoxFlat_l2wq7")
+value = 50.0
+show_percentage = false
 
 [node name="Money" type="HBoxContainer" parent="UI/HUD/MarginContainer/VBox/Stats"]
 custom_minimum_size = Vector2(0, 50)

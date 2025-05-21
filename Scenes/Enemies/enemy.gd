@@ -35,16 +35,17 @@ func _physics_process(delta) ->void:
 func get_hit(damage) -> void:
 	health -= damage
 	if health <= 0:
-		die()
-		drop_reward.emit(reward)
+		die(true)
 		return
 	if not health_bar.visible:
 		health_bar.show()
 	health_bar.update_health(health)
 
 
-func die() -> void:
+func die(give_reward: bool = false) -> void:
 	if not dead:
+		if give_reward:
+			drop_reward.emit(reward)
 		dead = true
 		#get_node("Body/CollisionShape2D").disabled = true
 		enemy_killed.emit()

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Wave" load_steps=6 format=3 uid="uid://q8gjox5sth1n"]
+[gd_resource type="Resource" script_class="Wave" load_steps=4 format=3 uid="uid://q8gjox5sth1n"]
 
 [ext_resource type="Script" path="res://Resources/Levels/wave.gd" id="1_su5li"]
 [ext_resource type="Script" path="res://Resources/Levels/enemy_sequence.gd" id="2_34w1c"]
@@ -6,21 +6,9 @@
 [sub_resource type="Resource" id="Resource_ni1pk"]
 script = ExtResource("2_34w1c")
 type = "tank_blue"
-amount = 5
-interval = 0.6
-
-[sub_resource type="Resource" id="Resource_2fndw"]
-script = ExtResource("2_34w1c")
-type = "tank_red"
-amount = 3
-interval = 1.0
-
-[sub_resource type="Resource" id="Resource_ti5xn"]
-script = ExtResource("2_34w1c")
-type = "tank_blue"
-amount = 5
-interval = 0.5
+amount = 25
+interval = 0.7
 
 [resource]
 script = ExtResource("1_su5li")
-wave = Array[ExtResource("2_34w1c")]([SubResource("Resource_ni1pk"), SubResource("Resource_2fndw"), SubResource("Resource_ti5xn")])
+wave = Array[ExtResource("2_34w1c")]([SubResource("Resource_ni1pk")])
